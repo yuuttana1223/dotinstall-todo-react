@@ -76,6 +76,11 @@ export const App = () => {
     [setIsEditing, setItem]
   );
 
+  const editCancel = useCallback(() => {
+    setIsEditing(false);
+    setItem("");
+  }, [setIsEditing, setItem]);
+
   const updateTodo = useCallback(
     (e) => {
       e.preventDefault();
@@ -117,6 +122,7 @@ export const App = () => {
         addTodo={addTodo}
         updateTodo={updateTodo}
         isEditing={isEditing}
+        editCancel={editCancel}
       />
     </div>
   );
