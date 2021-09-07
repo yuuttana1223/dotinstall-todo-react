@@ -8,8 +8,9 @@ export const App = () => {
   const [todos, setTodos] = useState(
     JSON.parse(localStorage.getItem("todos")) || []
   );
-
   const [item, setItem] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [todo, setTodo] = useState("");
 
   const getUniqueId = () => {
     // toString(基数) 36進数
@@ -66,6 +67,30 @@ export const App = () => {
     [todos]
   );
 
+  const editTodo = useCallback(
+    (todo) => {
+      setIsEditing(true);
+      setItem(todo.title);
+      setTodo(todo);
+    },
+    [setIsEditing, setItem]
+  );
+
+  const updateTodo = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (item.trim() === "") return;
+
+      const newTodos = [...todos];
+      const pos = todos.indexOf(todo);
+      newTodos[pos].title = item;
+      setTodos(newTodos);
+      setItem("");
+      setIsEditing(false);
+    },
+    [todos, todo, item]
+  );
+
   const updateItem = useCallback(
     (e) => {
       setItem(e.target.value);
@@ -80,8 +105,19 @@ export const App = () => {
   return (
     <div className="container">
       <TodoHeader todos={todos} purge={purge} />
-      <TodoList todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} />
-      <TodoForm item={item} updateItem={updateItem} addTodo={addTodo} />
+      <TodoList
+        todos={todos}
+        checkTodo={checkTodo}
+        deleteTodo={deleteTodo}
+        editTodo={editTodo}
+      />
+      <TodoForm
+        item={item}
+        updateItem={updateItem}
+        addTodo={addTodo}
+        updateTodo={updateTodo}
+        isEditing={isEditing}
+      />
     </div>
   );
 };

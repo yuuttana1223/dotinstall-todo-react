@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-export const TodoItem = memo(({ todo, checkTodo, deleteTodo }) => {
+export const TodoItem = memo(({ todo, checkTodo, deleteTodo, editTodo }) => {
   return (
     <li>
       <label>
@@ -11,8 +11,11 @@ export const TodoItem = memo(({ todo, checkTodo, deleteTodo }) => {
         />
         <span className={todo.isDone ? "done" : ""}>{todo.title}</span>
       </label>
-      <span className="cmd" onClick={deleteTodo}>
+      <span className="cmd" onClick={() => deleteTodo(todo)}>
         [x]
+      </span>
+      <span className="cmd" onClick={() => editTodo(todo)}>
+        [編集]
       </span>
     </li>
   );

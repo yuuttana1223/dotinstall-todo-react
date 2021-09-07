@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { TodoItem } from "./TodoItem";
 
-export const TodoList = memo(({ todos, checkTodo, deleteTodo }) => {
+export const TodoList = memo(({ todos, checkTodo, deleteTodo, editTodo }) => {
   return (
     <ul>
       {todos.length ? (
@@ -11,6 +11,7 @@ export const TodoList = memo(({ todos, checkTodo, deleteTodo }) => {
             todo={todo}
             checkTodo={checkTodo}
             deleteTodo={deleteTodo}
+            editTodo={editTodo}
           />
         ))
       ) : (
