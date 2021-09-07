@@ -1,4 +1,4 @@
-export const TodoItem = ({ todo, checkTodo }) => {
+export const TodoItem = ({ todo, checkTodo, deleteTodo }) => {
   return (
     <li>
       <label>
@@ -7,8 +7,11 @@ export const TodoItem = ({ todo, checkTodo }) => {
           checked={todo.isDone}
           onChange={() => checkTodo(todo)}
         />
+        <span className={todo.isDone ? "done" : ""}>{todo.title}</span>
       </label>
-      <span className={todo.isDone ? "done" : ""}>{todo.title}</span>
+      <span className="cmd" onClick={deleteTodo}>
+        [x]
+      </span>
     </li>
   );
 };
