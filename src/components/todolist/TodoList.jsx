@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { TodoItem } from "./TodoItem";
 
-export const TodoList = ({ todos, checkTodo, deleteTodo }) => {
+export const TodoList = memo(({ todos, checkTodo, deleteTodo }) => {
   return (
     <ul>
       {todos.length ? (
@@ -17,4 +18,4 @@ export const TodoList = ({ todos, checkTodo, deleteTodo }) => {
       )}
     </ul>
   );
-};
+});

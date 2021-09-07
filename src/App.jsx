@@ -1,29 +1,87 @@
-import { useState } from "react";
+/* eslint-disable no-restricted-globals */
+import { useCallback, useEffect, useState } from "react";
+import { TodoForm } from "./components/todolist/TodoForm";
+import { TodoHeader } from "./components/todolist/TodoHeader";
 import { TodoList } from "./components/todolist/TodoList";
-import { todosArray } from "./data/todos";
 
 export const App = () => {
-  const [todos, setTodos] = useState(todosArray);
+  const [todos, setTodos] = useState(
+    JSON.parse(localStorage.getItem("todos")) || []
+  );
 
-  const checkTodo = (todo) => {
-    const newTodos = [...todos];
-    newTodos[todo.id].isDone = !newTodos[todo.id].isDone;
+  const [item, setItem] = useState("");
+
+  const getUniqueId = () => {
+    // toString(基数) 36進数
+    return `${new Date().getTime().toString(36)}-${Math.random().toString(36)}`;
+  };
+
+  // 達成したタスクを一気に消す
+  const purge = useCallback(() => {
+    if (!confirm("Are you sure?")) return;
+
+    const newTodos = todos.filter((todo) => !todo.isDone);
     setTodos(newTodos);
-  };
+  }, [todos]);
 
-  const deleteTodo = (todo) => {
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm("Are you sure?")) {
-      const newTodos = [...todos];
-      newTodos.splice(todo.id, 1);
+  const addTodo = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (item.trim() === "") return;
+
+      const newItem = {
+        id: getUniqueId(),
+        title: item,
+        isDone: false,
+      };
+
+      const newTodos = [...todos, newItem];
       setTodos(newTodos);
-    }
-  };
+      setItem("");
+    },
+    [item, todos]
+  );
+
+  const checkTodo = useCallback(
+    (todo) => {
+      // pos(position)は位置
+      // idだけの配列を作り何番目かを特定
+      const pos = todos.map((todo) => todo.id).indexOf(todo.id);
+      const newTodos = [...todos];
+      newTodos[pos].isDone = !newTodos[pos].isDone;
+      setTodos(newTodos);
+    },
+    [todos]
+  );
+
+  const deleteTodo = useCallback(
+    (todo) => {
+      if (!confirm("Are you sure?")) return;
+
+      const newTodos = [...todos];
+      const pos = todos.indexOf(todo);
+      newTodos.splice(pos, 1);
+      setTodos(newTodos);
+    },
+    [todos]
+  );
+
+  const updateItem = useCallback(
+    (e) => {
+      setItem(e.target.value);
+    },
+    [setItem]
+  );
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className="container">
-      <h1>My Todos</h1>
+      <TodoHeader todos={todos} purge={purge} />
       <TodoList todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} />
+      <TodoForm item={item} updateItem={updateItem} addTodo={addTodo} />
     </div>
   );
 };

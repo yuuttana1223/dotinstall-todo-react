@@ -1,4 +1,6 @@
-export const TodoItem = ({ todo, checkTodo, deleteTodo }) => {
+import { memo } from "react";
+
+export const TodoItem = memo(({ todo, checkTodo, deleteTodo }) => {
   return (
     <li>
       <label>
@@ -14,4 +16,4 @@ export const TodoItem = ({ todo, checkTodo, deleteTodo }) => {
       </span>
     </li>
   );
-};
+});
