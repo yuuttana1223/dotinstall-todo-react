@@ -30,13 +30,13 @@ export const App = () => {
       e.preventDefault();
       if (item.trim() === "") return;
 
-      const newItem = {
+      const netTodo = {
         id: getUniqueId(),
         title: item,
         isDone: false,
       };
 
-      const newTodos = [...todos, newItem];
+      const newTodos = [...todos, netTodo];
       setTodos(newTodos);
       setItem("");
     },

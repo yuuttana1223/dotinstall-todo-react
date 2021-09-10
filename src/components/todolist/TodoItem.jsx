@@ -12,7 +12,7 @@ export const TodoItem = memo(({ todo, checkTodo, deleteTodo, editTodo }) => {
         <span className={todo.isDone ? "done" : ""}>{todo.title}</span>
       </label>
       <span className="cmd" onClick={() => deleteTodo(todo)}>
-        [x]
+        [削除]
       </span>
       <span className="cmd" onClick={() => editTodo(todo)}>
         [編集]
